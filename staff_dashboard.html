@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CERCASP | GESTOR 2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        if (!sessionStorage.getItem('cercasp_auth')) {
+            alert("⚠️ ACCESO DENEGADO: Protocolo de seguridad activo.");
+            window.location.href = 'index.html'; // Patada de regreso
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: { 400: '#D4AF37' } },
+                    fontFamily: { heading: ['Cinzel', 'serif'], body: ['Montserrat', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-[#1a1a1a] text-white flex flex-col fixed h-full z-20">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="font-heading text-xl text-gold-400">CERCASP <span class="text-xs text-white block font-sans">GESTOR 2.0</span></h2>
+                <p id="user-display" class="text-[10px] text-gray-400 mt-2">Usuario Autenticado</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2 text-sm">
+                <button onclick="showSection('dashboard')" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded"><i class="fas fa-chart-pie w-5"></i> Resumen</button>
+                <button onclick="showSection('internos')" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded"><i class="fas fa-users w-5"></i> Internos</button>
+                <button onclick="showSection('medica')" class="w-full text-left px-4 py-3 hover:bg-gray-800 rounded"><i class="fas fa-user-md w-5"></i> Médica (IA)</button>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <button onclick="logout()" class="w-full bg-red-900/50 text-red-200 py-2 rounded text-xs font-bold">CERRAR SESIÓN</button>
+            </div>
+        </aside>
+
+        <main class="ml-64 p-8 w-full">
+            
+            <div id="sec-dashboard" class="section-view">
+                <h2 class="text-2xl font-bold mb-6">Panel General</h2>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-blue-500">
+                        <p class="text-gray-500 text-xs font-bold">Pacientes Activos</p>
+                        <p class="text-3xl font-bold mt-2" id="dash-active">17</p>
+                    </div>
+                    </div>
+            </div>
+
+            <div id="sec-internos" class="section-view hidden">
+                <h2 class="text-2xl font-bold mb-6">Gestión de Pacientes</h2>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-3">Nombre</th>
+                                <th class="px-6 py-3">Estatus</th>
+                                <th class="px-6 py-3">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="sec-medica" class="section-view hidden">
+                <h2 class="text-2xl font-bold mb-6">Expediente Clínico con IA</h2>
+                <div class="bg-white p-6 rounded shadow">
+                    <label class="block text-xs font-bold text-purple-800 mb-1">Apuntes Rápidos:</label>
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="raw-notes" placeholder="Ej: Paciente irritable, durmió mal..." class="flex-1 border p-2 rounded">
+                        <button onclick="simulateAI()" class="bg-purple-600 text-white px-4 py-2 rounded font-bold text-xs">✨ Generar Nota SOAP</button>
+                    </div>
+                    <textarea id="ai-output" class="w-full h-40 border p-2 rounded font-mono text-sm" placeholder="La IA generará la nota aquí..."></textarea>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Recuperar usuario
+        document.getElementById('user-display').textContent = sessionStorage.getItem('cercasp_user');
+
+        // Datos (En un sistema real, esto viene de una base de datos)
+        const patients = [
+            { id: 1, name: "FRANCISCO SANCHEZ", status: "Egresado" },
+            { id: 2, name: "LUIS FERNANDO SALAS", status: "Activo" },
+            { id: 3, name: "JORGE EMMANUEL MACIAS", status: "Activo" }
+        ];
+
+        // Navegación
+        function showSection(id) {
+            document.querySelectorAll('.section-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById('sec-' + id).classList.remove('hidden');
+        }
+
+        // Render Tabla
+        const tbody = document.getElementById('table-body');
+        patients.forEach(p => {
+            tbody.innerHTML += `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-6 py-4 font-bold">${p.name}</td>
+                    <td class="px-6 py-4"><span class="bg-gray-200 px-2 py-1 rounded text-xs">${p.status}</span></td>
+                    <td class="px-6 py-4"><button class="text-blue-600">Editar</button></td>
+                </tr>
+            `;
+        });
+
+        // Simulación IA (Para demostración)
+        function simulateAI() {
+            const raw = document.getElementById('raw-notes').value;
+            if(!raw) return alert("Escribe algo primero.");
+            document.getElementById('ai-output').value = "Generando...";
+            setTimeout(() => {
+                document.getElementById('ai-output').value = `NOTA DE EVOLUCIÓN (SOAP)\n\nS (Subjetivo): Paciente refiere "${raw}".\nO (Objetivo): Signos vitales estables. Alerta y orientado.\nA (Análisis): Cuadro de ansiedad leve por abstinencia.\nP (Plan): Continuar terapia ocupacional.`;
+                Toastify({ text: "Nota Generada por IA", style: { background: "purple" } }).showToast();
+            }, 1000);
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
