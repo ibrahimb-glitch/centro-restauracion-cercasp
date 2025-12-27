@@ -54,7 +54,7 @@
                 <div class="grid grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded shadow border-l-4 border-blue-500">
                         <p class="text-gray-500 text-xs font-bold">Pacientes Activos</p>
-                        <p class="text-3xl font-bold mt-2" id="dash-active">17</p>
+                        <p class="text-3xl font-bold mt-2" id="dash-active">23</p>
                     </div>
                     </div>
             </div>
@@ -97,9 +97,35 @@
 
         // Datos (En un sistema real, esto viene de una base de datos)
         const patients = [
-            { id: 1, name: "FRANCISCO SANCHEZ", status: "Egresado" },
-            { id: 2, name: "LUIS FERNANDO SALAS", status: "Activo" },
-            { id: 3, name: "JORGE EMMANUEL MACIAS", status: "Activo" }
+            { id: 1, name: "FRANCISCO SANCHEZ MONSIVAIS", dob: "2000-01-01", entry: "2024-05-10", exit: "2024-10-07", fee: 0, status: "Egresado", paid: false },
+            { id: 2, name: "LUIS FERNANDO SALAS CORDOVA", dob: "1998-01-01", entry: "2024-10-28", exit: "2025-03-27", fee: 0, status: "Egresado", paid: false },
+            { id: 3, name: "JORGE EMMANUEL MACIAS ESPINOZA", dob: "1990-01-01", entry: "2024-12-26", exit: "2025-05-25", fee: 500, status: "Egresado", paid: false },
+            { id: 4, name: "ENRIQUE ROQUE PEREZ", dob: "2003-01-01", entry: "2025-05-13", exit: "2025-10-10", fee: 200, status: "Egresado", paid: false },
+            { id: 5, name: "EDUARDO MESTA AVILA", dob: "1997-01-01", entry: "2025-06-08", exit: "2025-11-05", fee: 0, status: "Egresado", paid: false },
+            { id: 6, name: "ADRIAN DE JESUS CARRILLO ESPARZA", dob: "1986-01-01", entry: "2025-06-15", exit: "2025-11-12", fee: 200, status: "Egresado", paid: false },
+            { id: 7, name: "JORDAN JACIEL GALLEGOS PINEDA", dob: "2003-01-01", entry: "2025-07-18", exit: "2025-12-15", fee: 800, status: "Activo", paid: false },
+            { id: 8, name: "ALDO YASUA CARREON LOZANO", dob: "1996-01-01", entry: "2025-07-18", exit: "2025-12-15", fee: 800, status: "Activo", paid: false },
+            { id: 9, name: "WILIAM GERARDO MEDINA EZQUIVEL", dob: "1995-01-01", entry: "2025-07-27", exit: "2025-12-24", fee: 600, status: "Activo", paid: false },
+            { id: 10, name: "ARON RIVAS ALVAREZ", dob: "1983-01-01", entry: "2025-07-31", exit: "2025-12-28", fee: 400, status: "Activo", paid: false },
+            { id: 11, name: "HUGO ENRIQUE SOLIS GALLEGOS", dob: "1994-01-01", entry: "2025-08-05", exit: "2026-01-02", fee: 200, status: "Activo", paid: false },
+            { id: 12, name: "JESUS CARLOS YONG SANDATE", dob: "2001-01-01", entry: "2025-08-17", exit: "2026-01-14", fee: 600, status: "Activo", paid: false },
+            { id: 13, name: "HECTOR ALFREDO BARRAGAN GARCIA", dob: "1997-01-01", entry: "2025-08-29", exit: "2026-01-26", fee: 400, status: "Activo", paid: false },
+            { id: 14, name: "JUAN MANUEL HERNANDEZ NAJERA", dob: "2001-01-01", entry: "2025-09-21", exit: "2026-02-18", fee: 200, status: "Activo", paid: false },
+            { id: 15, name: "MANUEL ALVARADO ALVAREZ", dob: "1978-01-01", entry: "2025-09-24", exit: "2026-02-21", fee: 800, status: "Activo", paid: false },
+            { id: 16, name: "MARIO ALBERTO ESPARZA SALAZAR", dob: "2005-01-01", entry: "2025-10-04", exit: "2026-03-03", fee: 600, status: "Activo", paid: false },
+            { id: 17, name: "JOSE CARLOS HINOSTROZA MORENO", dob: "1974-01-01", entry: "2025-10-13", exit: "2026-03-12", fee: 500, status: "Activo", paid: false },
+            { id: 18, name: "LUIS JAVIER VALERO MUÑOZ", dob: "1989-01-01", entry: "2025-10-14", exit: "2026-03-13", fee: 200, status: "Activo", paid: false },
+            { id: 19, name: "VICTOR VILLARREAL VALENZUELA", dob: "1989-01-01", entry: "2025-10-19", exit: "2026-03-18", fee: 600, status: "Activo", paid: false },
+            { id: 20, name: "MAXY RENDON HERNANDEZ", dob: "1991-01-01", entry: "2025-10-19", exit: "2026-03-18", fee: 500, status: "Activo", paid: false },
+            { id: 21, name: "JUAN CARLOS MARENTES SALCEDO", dob: "2007-01-01", entry: "2025-10-24", exit: "2026-03-23", fee: 500, status: "Activo", paid: false },
+            { id: 22, name: "IVAN SAUCEDO MEDINA", dob: "1999-01-01", entry: "2025-11-01", exit: "2026-03-31", fee: 500, status: "Activo", paid: false },
+            { id: 23, name: "JULIO CESAR RENDON PADILLA", dob: "1989-01-01", entry: "2025-11-02", exit: "2026-04-01", fee: 400, status: "Activo", paid: false },
+            { id: 24, name: "JOSE MARIA LOZANO RODRIGUEZ", dob: "1999-01-01", entry: "2025-11-04", exit: "2026-04-03", fee: 400, status: "Activo", paid: false },
+            { id: 25, name: "JUAN ANTONIO CARRAZCO PALACIOS", dob: "2002-01-01", entry: "2025-11-13", exit: "2026-04-12", fee: 200, status: "Activo", paid: false },
+            { id: 26, name: "ADRIAN CARRAZCO PALACIOS", dob: "2000-01-01", entry: "2025-11-13", exit: "2026-04-12", fee: 200, status: "Activo", paid: false },
+            { id: 27, name: "JOSIMAR LARA TORRES", dob: "1997-01-01", entry: "2025-11-24", exit: "2026-04-23", fee: 800, status: "Activo", paid: false },
+            { id: 28, name: "OBED HUMBERTO MARTINEZ REGALADO", dob: "1989-01-01", entry: "2025-12-01", exit: "2026-04-30", fee: 800, status: "Activo", paid: false },
+            { id: 29, name: "JESUS ROBLES LOPEZ", dob: "1987-01-01", entry: "2025-12-01", exit: "2026-04-30", fee: 700, status: "Activo", paid: false }
         ];
 
         // Navegación
